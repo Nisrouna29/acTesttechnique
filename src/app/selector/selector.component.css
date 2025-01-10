@@ -1,0 +1,44 @@
+:host {
+  margin-top: 50px;
+  display: block;
+}
+
+mat-card {
+  width: fit-content !important;
+}
+
+.card-content {
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: fit-content !important;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 50px;
+}
+.front,
+.back,
+.other {
+  height: max-content;
+  width: fit-content;
+  box-sizing: border-box;
+}
+.front, .other{
+  max-width: 215px;
+}
+
+.back {
+ max-width:545px ;
+}
+
+.selectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 15px;
+  justify-content: center;
+}
+.title {
+  text-align: center;
+  color: rgb(0, 229, 255);
+  width: 100%;
+}

@@ -1,0 +1,27 @@
+<div class="top">
+  <div class="box-num">{{ index }}</div>
+  <div class="top-border"></div>
+</div>
+<div class="middle">
+  @let box = box$ | async;
+  @if(box && box.label) {
+  {{ box.label }}
+  } @else {
+  <div class="empty-label">Select element.</div>
+  }
+</div>
+<div class="buttom">
+  <div class="buttom-sub-border"></div>
+  <div class="buttom-sub-border">
+    @if(box && box.value) {
+    {{ box.value }}
+    }
+  </div>
+  <div class="buttom-sub-border"></div>
+  <div class="buttom-sub-border"></div>
+</div>
+@let selected = selected$ | async;
+@if(selected) {
+<div class="selected">
+</div>
+}
