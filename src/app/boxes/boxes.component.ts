@@ -34,19 +34,25 @@ export class BoxesComponent implements OnInit, AfterViewInit{
     // everytime there is a new emitted boxes, we are going to calculate the total
     this.boxService.boxes$.subscribe((boxes: Map<number, Box>) => {
       if (boxes) {
-        this.total = new Decimal(0);
-        boxes.forEach((value, key) => {
-          let currentBox = boxes.get(key);
-          if (currentBox && currentBox.value != null) {
-            this.total = this.total.plus(new Decimal(currentBox.value));
-          }
-        });
+        this.total = this.calculateTotal(boxes);
       }
     });
   }
   // delete all boxes
   deleteAllBoxes() {
     this.boxService.deleteAllboxes().pipe(tap(() => { this.total = new Decimal(0) })).subscribe();
+  }
+
+  // function to calculate sum
+  calculateTotal(boxes:  Map<number, Box>): Decimal {
+    let sum = new Decimal(0)
+    boxes.forEach((value, key) => {
+      let currentBox = boxes.get(key);
+      if (currentBox && currentBox.value != null) {
+        sum = sum.plus(new Decimal(currentBox.value));
+      }
+    });
+    return sum;
   }
 
 }
