@@ -70,12 +70,14 @@ export class BoxService {
   }
  // delete all boxes
   deleteAllboxes(): Observable<any> {
+    //here outside
+    let currentBox = this.selectedBox.getValue();
     return this.http.delete(`${this.apiUrl}/boxes.json`).pipe(tap(() => {
-      //refresh current boxes if
+      //refresh current boxes
       this.boxes.next(this.initMap());
-      let selectBox = this.selectedBox.getValue();
-      if (selectBox != null) {
-        this.selectedBox.next(new Box(selectBox.id, null, null, null))
+      // get current selected box
+      if (currentBox != null) {
+        this.selectedBox.next(new Box(currentBox.id, null, null, null))
       }
     }), catchError((error: HttpErrorResponse) => {
       console.error('An error occurred:', error.error);

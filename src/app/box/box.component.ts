@@ -26,8 +26,7 @@ export class BoxComponent {
     );
     // check if the current index of selected box in the service matches the index of box component
     this.selected$ = this.boxService.selectedBox$.pipe(
-      map((box: Box | null) => box ? box.id === this.index : false),
-      distinctUntilChanged((prev, curr) => prev === curr)
+      map((box: Box | null) => box ? box.id === this.index : false)
     );
   }
 

@@ -19,7 +19,8 @@ export class BoxesComponent implements OnInit, AfterViewInit{
   public total = new Decimal(0);
   @ViewChild('deleteButton') deleteButton!: MatButton;
   public click$ = new Observable<MouseEvent>();
-  constructor(private boxService: BoxService) {}
+  constructor(private boxService: BoxService) {
+}
 
   ngAfterViewInit() {
     if (this.deleteButton._elementRef && this.deleteButton._elementRef.nativeElement) {
@@ -29,7 +30,6 @@ export class BoxesComponent implements OnInit, AfterViewInit{
         });
     }
   }
-
   ngOnInit(): void {
     // everytime there is a new emitted boxes, we are going to calculate the total
     this.boxService.boxes$.subscribe((boxes: Map<number, Box>) => {
