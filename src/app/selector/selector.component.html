@@ -1,13 +1,13 @@
-@let frontSelectors = frontSelectors$ | async;
-@let backSelectors = backSelectors$ | async;
-@let otherSelectors = otherSelectors$ | async;
-@defer (when frontSelectors && backSelectors && otherSelectors) {
+@let frontOptions = frontOptions$ | async;
+@let backOptions = backOptions$ | async;
+@let othersOptions = othersOptions$ | async;
+@defer (when frontOptions && backOptions && othersOptions) {
 <mat-card appearance="raised">
   <mat-card-content class="card-content">
     <div class="front">
       <div class="title">front salto's:</div>
       <div class="selectors">
-        @for (item of frontSelectors; track item.id) {
+        @for (item of frontOptions; track item.id) {
         <app-selector-option [selector]="item"></app-selector-option>
         }
       </div>
@@ -15,7 +15,7 @@
     <div class="back">
       <div class="title">back salto's:</div>
       <div class="selectors">
-        @for (item of backSelectors; track item.id) {
+        @for (item of backOptions; track item.id) {
         <app-selector-option [selector]="item"></app-selector-option>
         }
       </div>
@@ -23,7 +23,7 @@
     <div class="other">
       <div class="title">other:</div>
       <div class="selectors">
-        @for (item of otherSelectors; track item.id) {
+        @for (item of othersOptions; track item.id) {
         <app-selector-option [selector]="item"></app-selector-option>
         }
       </div>

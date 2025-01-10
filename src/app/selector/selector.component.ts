@@ -15,14 +15,14 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectorComponent implements OnInit {
-  public frontSelectors$!: Observable<Selector[]>;
-  public backSelectors$!: Observable<Selector[]>;
-  public otherSelectors$!: Observable<Selector[]>;
+  public frontOptions$!: Observable<Selector[]>;
+  public backOptions$!: Observable<Selector[]>;
+  public othersOptions$!: Observable<Selector[]>;
   constructor(private selectoService: SelectoService) { }
 
   ngOnInit(): void {
     // get all selector options depending on their types
-    const selectors$ = this.selectoService.getSelectors().pipe(
+    const selectors$ = this.selectoService.getOptions().pipe(
       map((selectors: Selector[]) => ({
         front: selectors.filter(selector => selector.type === 'front'),
         back: selectors.filter(selector => selector.type === 'back'),
@@ -38,8 +38,8 @@ export class SelectorComponent implements OnInit {
       })
     );
 
-    this.frontSelectors$ = selectors$.pipe(map(data => data.front));
-    this.backSelectors$ = selectors$.pipe(map(data => data.back));
-    this.otherSelectors$ = selectors$.pipe(map(data => data.other));
+    this.frontOptions$ = selectors$.pipe(map(data => data.front));
+    this.backOptions$ = selectors$.pipe(map(data => data.back));
+    this.othersOptions$ = selectors$.pipe(map(data => data.other));
   }
 }

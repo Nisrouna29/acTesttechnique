@@ -9,7 +9,7 @@ import { Selector } from '../models/selector';
 export class SelectoService {
    private apiUrl = 'https://ac-project-62efb-default-rtdb.firebaseio.com';
    constructor(private http: HttpClient) { }
-   getSelectors(): Observable<Selector[]> {
+   getOptions(): Observable<Selector[]> {
      return this.http.get<Selector[]>(`${this.apiUrl}/selectors.json`);
    }
 }
