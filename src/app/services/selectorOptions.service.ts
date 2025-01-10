@@ -6,10 +6,10 @@ import { Selector } from '../models/selector';
 @Injectable({
   providedIn: 'root'
 })
-export class SelectoService {
+export class SelectorOptionsService {
    private apiUrl = 'https://ac-project-62efb-default-rtdb.firebaseio.com';
    constructor(private http: HttpClient) { }
    getOptions(): Observable<Selector[]> {
-     return this.http.get<Selector[]>(`${this.apiUrl}/selectors.json`);
+     return this.http.get<Selector[]>(`${this.apiUrl}/options.json`);
    }
 }
