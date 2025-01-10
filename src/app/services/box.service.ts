@@ -45,27 +45,9 @@ export class BoxService {
     this.boxes.next(boxes);
   }
 
-  // we are receiving a json object when call get request, this function is going to transform it to an array
+  // receiving data
   getAllboxes(): Observable<IBox[]> {
-    return this.http.get<Record<string, IBox>>(`${this.apiUrl}/boxes.json`).pipe(
-      map(response => {
-        if (!response) {
-          console.warn('Response is null or undefined, returning empty array');
-          return [];
-        }
-        return Object.keys(response).map(key => {
-          const box = response[key];
-          if (!box) {
-            return null;
-          }
-          return {
-            id: box.id,
-            idSelector: box.idSelector ?? null,
-            label: box.label ?? null,
-            value: box.value ?? null,
-          };
-        }).filter((box: IBox | null) => box !== null) as IBox[];
-      }),
+    return this.http.get<IBox[]>(`${this.apiUrl}/boxes.json`).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('An error occurred:', error.error);
         return throwError(() => new Error('Failed retrieve boxes.'));
