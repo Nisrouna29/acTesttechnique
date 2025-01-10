@@ -65,10 +65,14 @@ export class BoxService {
             value: box.value ?? null,
           };
         }).filter((box: IBox | null) => box !== null) as IBox[];
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('An error occurred:', error.error);
+        return throwError(() => new Error('Failed retrieve boxes.'));
       })
     );
   }
- // delete all boxes
+  // delete all boxes
   deleteAllboxes(): Observable<any> {
     //here outside
     let currentBox = this.selectedBox.getValue();
