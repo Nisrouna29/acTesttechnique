@@ -21,8 +21,8 @@ export class SelectorComponent implements OnInit {
   constructor(private selectorOptionsService: SelectorOptionsService) { }
 
   ngOnInit(): void {
-    // get all selector options depending on their types
-    const selectors$ = this.selectorOptionsService.getOptions().pipe(
+    // get all options depending on their types
+    const options$ = this.selectorOptionsService.getOptions().pipe(
       map((selectors: Selector[]) => ({
         front: selectors.filter(selector => selector.type === 'front'),
         back: selectors.filter(selector => selector.type === 'back'),
@@ -38,8 +38,8 @@ export class SelectorComponent implements OnInit {
       })
     );
 
-    this.frontOptions$ = selectors$.pipe(map(data => data.front));
-    this.backOptions$ = selectors$.pipe(map(data => data.back));
-    this.othersOptions$ = selectors$.pipe(map(data => data.other));
+    this.frontOptions$ = options$.pipe(map(data => data.front));
+    this.backOptions$ = options$.pipe(map(data => data.back));
+    this.othersOptions$ = options$.pipe(map(data => data.other));
   }
 }
