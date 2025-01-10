@@ -72,14 +72,12 @@ export class BoxService {
       })
     );
   }
-  // delete all boxes
+ // delete all boxes
   deleteAllboxes(): Observable<any> {
-    //here outside
-    let currentBox = this.selectedBox.getValue();
     return this.http.delete(`${this.apiUrl}/boxes.json`).pipe(tap(() => {
       //refresh current boxes
       this.boxes.next(this.initMap());
-      // get current selected box
+      let currentBox = this.selectedBox.getValue();
       if (currentBox != null) {
         this.selectedBox.next(new Box(currentBox.id, null, null, null))
       }
