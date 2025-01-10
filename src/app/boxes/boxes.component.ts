@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { BoxComponent } from '../box/box.component';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BoxService } from '../services/box.service';
 import { Box } from '../models/box';
@@ -15,20 +15,21 @@ import Decimal from 'decimal.js';
   styleUrl: './boxes.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BoxesComponent implements OnInit {
+export class BoxesComponent implements OnInit, AfterViewInit{
   public total = new Decimal(0);
-  @ViewChild('deleteButton', { static: false }) deleteButton!: ElementRef;
+  @ViewChild('deleteButton') deleteButton!: MatButton;
   public click$ = new Observable<MouseEvent>();
-  constructor(private boxService: BoxService) {
-  }
+  constructor(private boxService: BoxService) {}
 
   ngAfterViewInit() {
-    this.click$ = fromEvent(this.deleteButton.nativeElement, 'click');
-    // we delete al boxes when we click on button
-    this.click$.subscribe((event) => {
-      this.deleteAllBoxes();
-    });
+    if (this.deleteButton._elementRef && this.deleteButton._elementRef.nativeElement) {
+      fromEvent(this.deleteButton._elementRef.nativeElement, 'click')
+        .subscribe(() => {
+          this.deleteAllBoxes();
+        });
+    }
   }
+
   ngOnInit(): void {
     // everytime there is a new emitted boxes, we are going to calculate the total
     this.boxService.boxes$.subscribe((boxes: Map<number, Box>) => {
