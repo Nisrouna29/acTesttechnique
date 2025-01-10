@@ -1,8 +1,8 @@
-mat-card{
+mat-card {
   width: fit-content !important;
 }
 
-.box-card-content{
+.box-card-content {
   display: flex;
   flex-wrap: wrap;
   width: fit-content !important;
@@ -10,13 +10,14 @@ mat-card{
   width: fit-content;
   gap: 5px;
 }
-.delete-total, .total {
+.delete-total,
+.total {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
-  width: 100px
+  width: 100px;
 }
 .title {
   font-weight: bold;

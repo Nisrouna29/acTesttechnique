@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Selector } from '../models/selector';
 import { MatRippleModule } from '@angular/material/core';
 import { BoxService } from '../services/box.service';
 import { Box } from '../models/box';
 import { CommonModule } from '@angular/common';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, fromEvent, map } from 'rxjs';
 
 @Component({
   selector: 'app-selector-option',
@@ -14,27 +14,34 @@ import { Observable, combineLatest, map } from 'rxjs';
   styleUrls: ['./selector-option.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectorOptionComponent implements OnInit {
+export class SelectorOptionComponent implements OnInit, AfterViewInit {
+  @ViewChild('selectorButton', { static: false }) selectorButton!: ElementRef;
   @Input() public selector!: Selector;
   public selected$!: Observable<boolean>;
+  public click$ = new Observable<MouseEvent>();
 
-  constructor(private boxService: BoxService) {}
+  constructor(private boxService: BoxService) { }
+  ngAfterViewInit() {
+    this.click$ = fromEvent(this.selectorButton.nativeElement, 'click');
+    // if we click on the button we patch the value with her new value
+    this.click$.subscribe((event) => {
+      this.boxService.patchBox(this.selector).subscribe();
+    });
+
+  }
+
   ngOnInit(): void {
-    this.selected$ = combineLatest([
-      this.boxService.selectedBox$,
-      this.boxService.boxes$
-    ]).pipe(
-      map(([selectedBox, boxes]: [Box | null, Map<number, Box>]) => {
-        if (selectedBox && boxes.has(selectedBox.id) && boxes.get(selectedBox.id)!.idSelector === this.selector.id) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-    );
+    //check if the selector option id matches the id selector of the selected box
+    this.selected$ =
+      this.boxService.selectedBox$.pipe(
+        map((selectedBox: Box | null) => {
+          if (selectedBox && selectedBox!.idSelector === this.selector.id) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      );
   }
 
-  updateBoxValue() {
-    this.boxService.patchBox(this.selector).subscribe();
-  }
 }

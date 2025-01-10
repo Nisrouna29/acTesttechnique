@@ -21,6 +21,7 @@ export class SelectorComponent implements OnInit {
   constructor(private selectoService: SelectoService) { }
 
   ngOnInit(): void {
+    // get all selector options depending on their types
     const selectors$ = this.selectoService.getSelectors().pipe(
       map((selectors: Selector[]) => ({
         front: selectors.filter(selector => selector.type === 'front'),
@@ -28,6 +29,7 @@ export class SelectorComponent implements OnInit {
         other: selectors.filter(selector => selector.type === 'other')
       })),
       catchError((error) => {
+        console.error("Error while fetching data", error)
         return of({
           front: [],
           back: [],

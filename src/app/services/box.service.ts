@@ -83,15 +83,17 @@ export class BoxService {
     }))
   }
 
-  // this patch method is going to create or mody a box
+  // this patch method is going to create or modify a box
   patchBox(selector: Selector): Observable<any> {
     let currentBox = this.selectedBox.getValue();
     let currentBoxes = this.boxes.getValue();
     if (currentBox && currentBox.id) {
       let box = new Box(currentBox.id, selector.id, selector.label, selector.value,)
       return this.http.patch(`${this.apiUrl}/boxes/${box.id}.json`, box).pipe(tap(() => {
+        //update map of boxes
         currentBoxes.set(currentBox.id, box);
         this.updateBoxes(currentBoxes);
+        // if currentBox.id < 10 the next selected box has id = id + 1
         if (currentBox.id < 10) {
           let nextBox = currentBoxes.get(currentBox.id + 1)
           if (nextBox) {

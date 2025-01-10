@@ -14,6 +14,5 @@ export class Box implements IBox{
     this.idSelector = idSelector;
     this.label =label;
     this.value =value;
-
   }
 }

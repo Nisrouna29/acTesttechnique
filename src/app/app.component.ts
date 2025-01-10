@@ -5,25 +5,24 @@ import { BoxService } from './services/box.service';
 import { Box } from './models/box';
 
 @Component({
-    selector: 'app-root',
-    imports: [BoxesComponent, SelectorComponent],
-    standalone: true,
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.css'
+  selector: 'app-root',
+  imports: [BoxesComponent, SelectorComponent],
+  standalone: true,
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'interactive-box-selection';
-   showSelector!: boolean;
+   public title = 'interactive-box-selection';
+   public showSelector!: boolean;
   constructor(private boxService: BoxService) {
   }
   ngOnInit(): void {
     this.boxService.selectedBox$.subscribe((box: Box | null) => {
-      if(box ){
+      if (box) {
         this.showSelector = true;
       } else {
         this.showSelector = false;
       }
-
     });
   }
 }
