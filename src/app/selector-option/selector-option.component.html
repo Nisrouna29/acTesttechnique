@@ -1,6 +1,6 @@
-<button #selectorButton class="option"
+<button #optionButton class="option"
         [ngStyle]="{'background-color': (selected$ | async) ? '#e91e63' : 'white'}"
         matRipple
         [matRippleColor]="'#D0D0D0'">
-  {{selector.label}}
+  {{option.label}}
 </button>

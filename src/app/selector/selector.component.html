@@ -8,7 +8,7 @@
       <div class="title">front salto's:</div>
       <div class="selectors">
         @for (item of frontOptions; track item.id) {
-        <app-selector-option [selector]="item"></app-selector-option>
+        <app-selector-option [option]="item"></app-selector-option>
         }
       </div>
     </div>
@@ -16,7 +16,7 @@
       <div class="title">back salto's:</div>
       <div class="selectors">
         @for (item of backOptions; track item.id) {
-        <app-selector-option [selector]="item"></app-selector-option>
+        <app-selector-option [option]="item"></app-selector-option>
         }
       </div>
     </div>
@@ -24,7 +24,7 @@
       <div class="title">other:</div>
       <div class="selectors">
         @for (item of othersOptions; track item.id) {
-        <app-selector-option [selector]="item"></app-selector-option>
+        <app-selector-option [option]="item"></app-selector-option>
         }
       </div>
     </div>

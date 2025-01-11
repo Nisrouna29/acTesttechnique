@@ -15,17 +15,17 @@ import { Observable, fromEvent, map } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectorOptionComponent implements OnInit, AfterViewInit {
-  @ViewChild('selectorButton', { static: false }) selectorButton!: ElementRef;
-  @Input() public selector!: ISelector;
+  @ViewChild('optionButton', { static: false }) optionButton!: ElementRef;
+  @Input() public option!: ISelector;
   public selected$!: Observable<boolean>;
   public click$ = new Observable<MouseEvent>();
 
   constructor(private boxService: BoxService) { }
   ngAfterViewInit() {
-    this.click$ = fromEvent(this.selectorButton.nativeElement, 'click');
+    this.click$ = fromEvent(this.optionButton.nativeElement, 'click');
     // if we click on the button we patch the value with her new value
     this.click$.subscribe((event) => {
-      this.boxService.patchBox(this.selector).subscribe();
+      this.boxService.patchBox(this.option).subscribe();
     });
 
   }
@@ -35,7 +35,7 @@ export class SelectorOptionComponent implements OnInit, AfterViewInit {
     this.selected$ =
       this.boxService.selectedBox$.pipe(
         map((selectedBox: Box | null) => {
-          if (selectedBox && selectedBox.idSelector === this.selector.id) {
+          if (selectedBox && selectedBox.idSelector === this.option.id) {
             return true;
           } else {
             return false;
