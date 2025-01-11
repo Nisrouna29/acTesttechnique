@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { SelectorOptionComponent } from '../selector-option/selector-option.component';
 import { SelectorOptionsService } from '../services/selectorOptions.service';
-import { Selector } from '../models/selector';
+import { ISelector} from '../models/selector';
 import { Observable, catchError, map, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -15,15 +15,15 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectorComponent implements OnInit {
-  public frontOptions$!: Observable<Selector[]>;
-  public backOptions$!: Observable<Selector[]>;
-  public othersOptions$!: Observable<Selector[]>;
+  public frontOptions$!: Observable<ISelector[]>;
+  public backOptions$!: Observable<ISelector[]>;
+  public othersOptions$!: Observable<ISelector[]>;
   constructor(private selectorOptionsService: SelectorOptionsService) { }
 
   ngOnInit(): void {
     // get all options depending on their types
     const options$ = this.selectorOptionsService.getOptions().pipe(
-      map((selectors: Selector[]) => ({
+      map((selectors: ISelector[]) => ({
         front: selectors.filter(selector => selector.type === 'front'),
         back: selectors.filter(selector => selector.type === 'back'),
         other: selectors.filter(selector => selector.type === 'other')

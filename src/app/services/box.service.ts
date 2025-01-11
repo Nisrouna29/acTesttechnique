@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs';
 import { Box, IBox } from '../models/box';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Selector } from '../models/selector';
+import { ISelector } from '../models/selector';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +45,19 @@ export class BoxService {
     this.boxes.next(boxes);
   }
 
-  //get all data
+  //get all boxes, somtimes when use get Rest api in firebase, the response could be an array or object
   getAllboxes(): Observable<IBox[]> {
     return this.http.get<Record<string, IBox>>(`${this.apiUrl}/boxes.json`).pipe(
       map(response => {
+        // If response is null or undefined, return empty array
         if (!response) {
           console.warn('Response is null or undefined, returning empty array');
           return [];
         }
+        // If response is already an array, return it
+        if (Array.isArray(response)) return response;
+
+        // If response is an object, convert to array
         return Object.keys(response).map(key => {
           const box = response[key];
           if (!box) {
@@ -88,7 +93,7 @@ export class BoxService {
   }
 
   // this patch method is going to create or modify a box
-  patchBox(selector: Selector): Observable<any> {
+  patchBox(selector: ISelector): Observable<any> {
     let currentBox = this.selectedBox.getValue();
     let currentBoxes = this.boxes.getValue();
     if (currentBox && currentBox.id) {

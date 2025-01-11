@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Selector } from '../models/selector';
+import { ISelector } from '../models/selector';
 import { MatRippleModule } from '@angular/material/core';
 import { BoxService } from '../services/box.service';
 import { Box } from '../models/box';
@@ -16,7 +16,7 @@ import { Observable, fromEvent, map } from 'rxjs';
 })
 export class SelectorOptionComponent implements OnInit, AfterViewInit {
   @ViewChild('selectorButton', { static: false }) selectorButton!: ElementRef;
-  @Input() public selector!: Selector;
+  @Input() public selector!: ISelector;
   public selected$!: Observable<boolean>;
   public click$ = new Observable<MouseEvent>();
 
