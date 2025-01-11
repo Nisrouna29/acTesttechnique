@@ -1,4 +1,4 @@
-export interface ISelector {
+export interface ISelectorOption {
   id: number;
   label: string;
   value: number;

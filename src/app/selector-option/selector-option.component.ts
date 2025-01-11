@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ISelector } from '../models/selector';
+import { ISelectorOption } from '../models/selector.option';
 import { MatRippleModule } from '@angular/material/core';
 import { BoxService } from '../services/box.service';
 import { Box } from '../models/box';
@@ -16,7 +16,7 @@ import { Observable, fromEvent, map } from 'rxjs';
 })
 export class SelectorOptionComponent implements OnInit, AfterViewInit {
   @ViewChild('optionButton', { static: false }) optionButton!: ElementRef;
-  @Input() public option!: ISelector;
+  @Input() public option!: ISelectorOption;
   public selected$!: Observable<boolean>;
   public click$ = new Observable<MouseEvent>();
 
@@ -35,7 +35,7 @@ export class SelectorOptionComponent implements OnInit, AfterViewInit {
     this.selected$ =
       this.boxService.selectedBox$.pipe(
         map((selectedBox: Box | null) => {
-          if (selectedBox && selectedBox.idSelector === this.option.id) {
+          if (selectedBox && selectedBox.idSelectorOption === this.option.id) {
             return true;
           } else {
             return false;

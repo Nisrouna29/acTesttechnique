@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ISelector } from '../models/selector';
+import { ISelectorOption } from '../models/selector.option';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ export class SelectorOptionsService {
   constructor(private http: HttpClient) { }
 
  //get all options, somtimes when use get Rest api in firebase, the response could be an array or object
-  getOptions(): Observable<ISelector[]> {
-    return this.http.get<Record<string, ISelector>>(`${this.apiUrl}/options.json`).pipe(
+  getOptions(): Observable<ISelectorOption[]> {
+    return this.http.get<Record<string, ISelectorOption>>(`${this.apiUrl}/options.json`).pipe(
       map(response => {
         // If response is null or undefined, return empty array
         if (!response) {
@@ -34,7 +34,7 @@ export class SelectorOptionsService {
             value: option.value ?? null,
             type: option.type ?? null,
           };
-        }).filter((selector: ISelector | null) => selector !== null) as ISelector[];
+        }).filter((selector: ISelectorOption | null) => selector !== null) as ISelectorOption[];
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('An error occurred:', error.error);

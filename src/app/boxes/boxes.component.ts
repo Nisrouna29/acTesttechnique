@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { BoxComponent } from '../box/box.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';

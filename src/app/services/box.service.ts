@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { Box, IBox } from '../models/box';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ISelector } from '../models/selector';
+import { ISelectorOption } from '../models/selector.option';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +65,7 @@ export class BoxService {
           }
           return {
             id: box.id,
-            idSelector: box.idSelector ?? null,
+            idSelectorOption: box.idSelectorOption ?? null,
             label: box.label ?? null,
             value: box.value ?? null,
           };
@@ -93,11 +93,11 @@ export class BoxService {
   }
 
   // this patch method is going to create or modify a box
-  patchBox(selector: ISelector): Observable<any> {
+  patchBox(option: ISelectorOption): Observable<any> {
     let currentBox = this.selectedBox.getValue();
     let currentBoxes = this.boxes.getValue();
     if (currentBox && currentBox.id) {
-      let box = new Box(currentBox.id, selector.id, selector.label, selector.value,)
+      let box = new Box(currentBox.id, option.id, option.label, option.value,)
       return this.http.patch(`${this.apiUrl}/boxes/${box.id}.json`, box).pipe(tap(() => {
         //update map of boxes
         currentBoxes.set(currentBox.id, box);

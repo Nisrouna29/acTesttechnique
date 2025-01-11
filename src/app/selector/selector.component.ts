@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { SelectorOptionComponent } from '../selector-option/selector-option.component';
 import { SelectorOptionsService } from '../services/selectorOptions.service';
-import { ISelector} from '../models/selector';
+import { ISelectorOption} from '../models/selector.option';
 import { Observable, catchError, map, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -15,18 +15,18 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectorComponent implements OnInit {
-  public frontOptions$!: Observable<ISelector[]>;
-  public backOptions$!: Observable<ISelector[]>;
-  public othersOptions$!: Observable<ISelector[]>;
+  public frontOptions$!: Observable<ISelectorOption[]>;
+  public backOptions$!: Observable<ISelectorOption[]>;
+  public othersOptions$!: Observable<ISelectorOption[]>;
   constructor(private selectorOptionsService: SelectorOptionsService) { }
 
   ngOnInit(): void {
     // get all options depending on their types
     const options$ = this.selectorOptionsService.getOptions().pipe(
-      map((selectors: ISelector[]) => ({
-        front: selectors.filter(selector => selector.type === 'front'),
-        back: selectors.filter(selector => selector.type === 'back'),
-        other: selectors.filter(selector => selector.type === 'other')
+      map((options: ISelectorOption[]) => ({
+        front: options.filter(option => option.type === 'front'),
+        back: options.filter(option => option.type === 'back'),
+        other: options.filter(option => option.type === 'other')
       })),
       catchError((error) => {
         console.error("Error while fetching data", error)
