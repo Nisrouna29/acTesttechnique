@@ -35,7 +35,7 @@ export class SelectorOptionComponent implements OnInit, AfterViewInit {
     this.selected$ =
       this.boxService.selectedBox$.pipe(
         map((selectedBox: Box | null) => {
-          if (selectedBox && selectedBox!.idSelector === this.selector.id) {
+          if (selectedBox && selectedBox.idSelector === this.selector.id) {
             return true;
           } else {
             return false;
