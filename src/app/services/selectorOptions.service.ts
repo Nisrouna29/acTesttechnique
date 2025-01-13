@@ -30,9 +30,9 @@ export class SelectorOptionsService {
           }
           return {
             id: option.id,
-            label: option.label,
-            value: option.value,
-            type: option.type,
+            label: option.label ?? null,
+            value: option.value ?? null,
+            type: option.type ?? null,
           };
         }).filter((selector: ISelectorOption | null) => selector !== null) as ISelectorOption[];
       }),
