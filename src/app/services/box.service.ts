@@ -9,7 +9,7 @@ import { ISelectorOption } from '../models/selector.option';
 })
 export class BoxService {
   private apiUrl = 'https://ac-project-62efb-default-rtdb.firebaseio.com';
-  // current selected box that we are going to share between components
+  // current id selected box that we are going to share between components
   private idSelectedBox = new BehaviorSubject<number | null>(null);
   // updated boxes that we are going to share between components
   private boxes = new BehaviorSubject<Map<number, Box>>(new Map());
@@ -48,7 +48,7 @@ export class BoxService {
     this.boxes.next(boxes);
   }
 
-  //get all boxes, somtimes when use get Rest api in firebase, the response could be an array or object
+  //get all boxes, sometimes when use get Rest api in firebase, the response could be an array or object
   getAllboxes(): Observable<IBox[]> {
     return this.http.get<Record<string, IBox>>(`${this.apiUrl}/boxes.json`).pipe(
       map(response => {

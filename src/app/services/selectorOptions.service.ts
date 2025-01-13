@@ -10,7 +10,7 @@ export class SelectorOptionsService {
   private apiUrl = 'https://ac-project-62efb-default-rtdb.firebaseio.com';
   constructor(private http: HttpClient) { }
 
- //get all options, somtimes when use get Rest api in firebase, the response could be an array or object
+ //get all options, sometimes when use get Rest api in firebase, the response could be an array or object
   getOptions(): Observable<ISelectorOption[]> {
     return this.http.get<Record<string, ISelectorOption>>(`${this.apiUrl}/options.json`).pipe(
       map(response => {
