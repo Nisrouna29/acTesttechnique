@@ -86,7 +86,7 @@ export class BoxService {
     return this.http.delete(`${this.apiUrl}/boxes.json`).pipe(tap(() => {
       //refresh current boxes
       this.boxes.next(this.initMap());
-      this.idSelectedBox.next(currentIdSelectedBox);
+
     }), catchError((error: HttpErrorResponse) => {
       console.error('An error occurred:', error.error);
       return throwError(() => new Error('Failed to delete boxes.'));
