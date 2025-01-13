@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { SelectorOptionComponent } from '../selector-option/selector-option.component';
 import { SelectorOptionsService } from '../services/selectorOptions.service';
 import { ISelectorOption} from '../models/selector.option';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, shareReplay } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -27,7 +27,8 @@ export class SelectorComponent implements OnInit {
         front: options.filter(option => option.type === 'front'),
         back: options.filter(option => option.type === 'back'),
         other: options.filter(option => option.type === 'other')
-      })),
+      }),
+      shareReplay(1)), // cache the result to interact less with backend
       catchError((error) => {
         console.error("Error while fetching data", error)
         return of({
