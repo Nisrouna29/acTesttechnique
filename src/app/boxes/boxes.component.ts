@@ -40,7 +40,7 @@ export class BoxesComponent implements OnInit, AfterViewInit{
   }
   // delete all boxes
   deleteAllBoxes() {
-    this.boxService.deleteAllboxes().pipe(tap(() => { this.total = new Decimal(0) })).subscribe();
+    this.boxService.deleteAllboxes().subscribe();
   }
 
   // function to calculate sum
