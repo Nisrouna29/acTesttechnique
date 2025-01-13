@@ -7,7 +7,6 @@ mat-card {
   flex-wrap: wrap;
   width: fit-content !important;
   padding: 0 !important;
-  width: fit-content;
   gap: 5px;
 }
 .delete-total,
