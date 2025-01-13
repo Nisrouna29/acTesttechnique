@@ -10,13 +10,16 @@ import { ISelectorOption } from '../models/selector.option';
 export class BoxService {
   private apiUrl = 'https://ac-project-62efb-default-rtdb.firebaseio.com';
   // current selected box that we are going to share between components
-  private selectedBox = new BehaviorSubject<Box | null>(null);
+  private idSelectedBox = new BehaviorSubject<number | null>(null);
   // updated boxes that we are going to share between components
   private boxes = new BehaviorSubject<Map<number, Box>>(new Map());
-  public selectedBox$ = this.selectedBox.asObservable();
+  public idSelectedBox$ = this.idSelectedBox.asObservable();
   public boxes$ = this.boxes.asObservable();
 
   constructor(private http: HttpClient) {
+    this.loadBoxes();
+  }
+  loadBoxes() {
     this.getAllboxes().subscribe((boxes: Box[]) => {
       let mapboxes = this.initMap();
       if (boxes) {
@@ -38,8 +41,8 @@ export class BoxService {
     return map;
   }
 
-  updateSelectedBox(box: Box) {
-    this.selectedBox.next(box);
+  updateSelectedBox(idSelectedBox: number) {
+    this.idSelectedBox.next(idSelectedBox);
   }
   updateBoxes(boxes: Map<number, Box>) {
     this.boxes.next(boxes);
@@ -79,13 +82,11 @@ export class BoxService {
   }
  // delete all boxes
   deleteAllboxes(): Observable<any> {
-    let currentBox = this.selectedBox.getValue();
+    const currentIdSelectedBox = this.idSelectedBox.getValue();
     return this.http.delete(`${this.apiUrl}/boxes.json`).pipe(tap(() => {
       //refresh current boxes
       this.boxes.next(this.initMap());
-      if (currentBox != null) {
-        this.selectedBox.next(new Box(currentBox.id, null, null, null))
-      }
+      this.idSelectedBox.next(currentIdSelectedBox);
     }), catchError((error: HttpErrorResponse) => {
       console.error('An error occurred:', error.error);
       return throwError(() => new Error('Failed to delete boxes.'));
@@ -94,22 +95,17 @@ export class BoxService {
 
   // this patch method is going to create or modify a box
   patchBox(option: ISelectorOption): Observable<any> {
-    let currentBox = this.selectedBox.getValue();
-    let currentBoxes = this.boxes.getValue();
-    if (currentBox && currentBox.id) {
-      let box = new Box(currentBox.id, option.id, option.label, option.value,)
+    const currentIdSelectedBox = this.idSelectedBox.getValue();
+    const currentBoxes = this.boxes.getValue();
+    if (currentIdSelectedBox !== null) {
+      const box = new Box(currentIdSelectedBox, option.id, option.label, option.value,)
       return this.http.patch(`${this.apiUrl}/boxes/${box.id}.json`, box).pipe(tap(() => {
         //update map of boxes
-        currentBoxes.set(currentBox.id, box);
+        currentBoxes.set(currentIdSelectedBox, box);
         this.updateBoxes(currentBoxes);
-        // if currentBox.id < 10 the next selected box has id = id + 1
-        if (currentBox.id < 10) {
-          let nextBox = currentBoxes.get(currentBox.id + 1)
-          if (nextBox) {
-            this.selectedBox.next(nextBox);
-          }
-        } else if (currentBox.id === 10) {
-          this.selectedBox.next(box);
+        // if currentIdSelectedBox < 10 the next selected box has id = id + 1
+        if (currentIdSelectedBox < 10) {
+            this.idSelectedBox.next(currentIdSelectedBox + 1);
         }
       }), catchError((error: HttpErrorResponse) => {
         console.error('An error occurred:', error.error);

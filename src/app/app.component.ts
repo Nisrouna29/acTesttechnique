@@ -17,8 +17,8 @@ export class AppComponent {
   constructor(private boxService: BoxService) {
   }
   ngOnInit(): void {
-    this.boxService.selectedBox$.subscribe((box: Box | null) => {
-      if (box) {
+    this.boxService.idSelectedBox$.subscribe((box: number | null) => {
+      if (box !== null) {
         this.showSelector = true;
       } else {
         this.showSelector = false;

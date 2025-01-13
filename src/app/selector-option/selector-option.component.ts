@@ -1,10 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ISelectorOption } from '../models/selector.option';
 import { MatRippleModule } from '@angular/material/core';
-import { BoxService } from '../services/box.service';
-import { Box } from '../models/box';
+import { BoxService } from '../services/box.service'
 import { CommonModule } from '@angular/common';
-import { Observable, fromEvent, map } from 'rxjs';
+import { Observable, combineLatest, fromEvent, map } from 'rxjs';
 
 @Component({
   selector: 'app-selector-option',
@@ -31,17 +30,16 @@ export class SelectorOptionComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    //check if the selector option id matches the id selector of the selected box
-    this.selected$ =
-      this.boxService.selectedBox$.pipe(
-        map((selectedBox: Box | null) => {
-          if (selectedBox && selectedBox.idSelectorOption === this.option.id) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-      );
+    this.selected$ = combineLatest({
+      idSelectedBox: this.boxService.idSelectedBox$,
+      boxes: this.boxService.boxes$,
+    }).pipe(
+      map(({ idSelectedBox, boxes }) => {
+        return idSelectedBox !== null &&
+               boxes.has(idSelectedBox) &&
+               boxes.get(idSelectedBox)?.idSelectorOption === this.option.id;
+      })
+    );
   }
 
 }

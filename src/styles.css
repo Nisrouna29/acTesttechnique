@@ -3,5 +3,5 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 mat-card {
-  background-color: white !important;  /* Replace with your desired color */
+  background-color: white !important;
 }

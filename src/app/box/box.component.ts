@@ -25,8 +25,8 @@ export class BoxComponent {
       distinctUntilChanged((prev, curr) => prev === curr) // Prevent emitting if the object reference hasn't changed
     );
     // check if the current index of selected box in the service matches the index of box component
-    this.selected$ = this.boxService.selectedBox$.pipe(
-      map((box: Box | null) => box ? box.id === this.index : false)
+    this.selected$ = this.boxService.idSelectedBox$.pipe(
+      map((id: number | null) => id !== null ? id === this.index : false)
     );
   }
 
@@ -35,7 +35,7 @@ export class BoxComponent {
     this.box$.pipe(
       tap((box) => {
         if (box) {
-          this.boxService.updateSelectedBox(box);
+          this.boxService.updateSelectedBox(box.id);
         }
       })
     ).subscribe();
