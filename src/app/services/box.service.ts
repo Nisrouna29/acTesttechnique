@@ -20,16 +20,16 @@ export class BoxService {
     this.loadBoxes();
   }
   loadBoxes() {
-    this.getAllboxes().subscribe((boxes: Box[]) => {
-      let mapboxes = this.initMap();
+    this.getAllBoxes().subscribe((boxes: Box[]) => {
+      let mapBoxes = this.initMap();
       if (boxes) {
         for (let box of boxes) {
           if (box && box.id && box.id >= 1 && box.id <= 10) {
-            mapboxes.set(box.id, box);
+            mapBoxes.set(box.id, box);
           }
         }
       }
-      this.boxes.next(mapboxes);
+      this.boxes.next(mapBoxes);
     });
   }
 
@@ -47,9 +47,7 @@ export class BoxService {
   updateBoxes(boxes: Map<number, Box>) {
     this.boxes.next(boxes);
   }
-
-  //get all boxes, sometimes when use get Rest api in firebase, the response could be an array or object
-  getAllboxes(): Observable<IBox[]> {
+  getAllBoxes(): Observable<IBox[]> {
     return this.http.get<Record<string, IBox>>(`${this.apiUrl}/boxes.json`).pipe(
       map(response => {
         // If response is null or undefined, return empty array
@@ -57,9 +55,6 @@ export class BoxService {
           console.warn('Response is null or undefined, returning empty array');
           return [];
         }
-        // If response is already an array, return it
-        if (Array.isArray(response)) return response;
-
         // If response is an object, convert to array
         return Object.keys(response).map(key => {
           const box = response[key];
@@ -81,7 +76,7 @@ export class BoxService {
     );
   }
  // delete all boxes
-  deleteAllboxes(): Observable<any> {
+  deleteAllBoxes(): Observable<any> {
     const currentIdSelectedBox = this.idSelectedBox.getValue();
     return this.http.delete(`${this.apiUrl}/boxes.json`).pipe(tap(() => {
       //refresh current boxes

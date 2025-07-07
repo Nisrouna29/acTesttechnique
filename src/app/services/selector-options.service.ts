@@ -10,7 +10,6 @@ export class SelectorOptionsService {
   private apiUrl = 'https://ac-project-62efb-default-rtdb.firebaseio.com';
   constructor(private http: HttpClient) { }
 
- //get all options, sometimes when use get Rest api in firebase, the response could be an array or object
   getOptions(): Observable<ISelectorOption[]> {
     return this.http.get<Record<string, ISelectorOption>>(`${this.apiUrl}/options.json`).pipe(
       map(response => {
@@ -19,8 +18,6 @@ export class SelectorOptionsService {
           console.warn('Response is null or undefined, returning empty array');
           return [];
         }
-        // If response is already an array, return it
-        if (Array.isArray(response)) return response;
 
         // If response is an object, convert to array
         return Object.keys(response).map(key => {

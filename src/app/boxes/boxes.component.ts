@@ -5,7 +5,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BoxService } from '../services/box.service';
 import { Box } from '../models/box';
-import { fromEvent, Observable, tap } from 'rxjs';
+import { fromEvent, Observable, switchMap, tap } from 'rxjs';
 import Decimal from 'decimal.js';
 @Component({
   selector: 'app-boxes',
@@ -25,13 +25,14 @@ export class BoxesComponent implements OnInit, AfterViewInit{
   ngAfterViewInit() {
     if (this.deleteButton._elementRef && this.deleteButton._elementRef.nativeElement) {
       fromEvent(this.deleteButton._elementRef.nativeElement, 'click')
-        .subscribe(() => {
-          this.deleteAllBoxes();
-        });
+        .pipe(
+          switchMap(async () => this.deleteAllBoxes()) // <-- must return Observable
+        )
+        .subscribe();
     }
   }
   ngOnInit(): void {
-    // everytime there is a new emitted boxes, we are going to calculate the total
+    // every time there is a new emitted boxes, we are going to calculate the total
     this.boxService.boxes$.subscribe((boxes: Map<number, Box>) => {
       if (boxes) {
         this.total = this.calculateTotal(boxes);
@@ -40,7 +41,7 @@ export class BoxesComponent implements OnInit, AfterViewInit{
   }
   // delete all boxes
   deleteAllBoxes() {
-    this.boxService.deleteAllboxes().subscribe();
+    this.boxService.deleteAllBoxes().subscribe();
   }
 
   // function to calculate sum

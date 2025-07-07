@@ -19,7 +19,7 @@ export class BoxComponent {
   constructor(private boxService: BoxService) { }
 
   ngOnInit(): void {
-    // everytime the boxes map is changed, the box is updated
+    // every time the boxes map is changed, the box is updated
     this.box$ = this.boxService.boxes$.pipe(
       map((boxes: Map<number, Box>) => boxes.get(this.index) || null),
       distinctUntilChanged((prev, curr) => prev === curr) // Prevent emitting if the object reference hasn't changed

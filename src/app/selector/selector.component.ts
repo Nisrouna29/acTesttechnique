@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { SelectorOptionComponent } from '../selector-option/selector-option.component';
-import { SelectorOptionsService } from '../services/selectorOptions.service';
+import { SelectorOptionsService } from '../services/selector-options.service';
 import { ISelectorOption} from '../models/selector.option';
 import { Observable, catchError, map, of, shareReplay } from 'rxjs';
 import { CommonModule } from '@angular/common';
