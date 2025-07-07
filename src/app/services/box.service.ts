@@ -55,7 +55,6 @@ export class BoxService {
           console.warn('Response is null or undefined, returning empty array');
           return [];
         }
-        // If response is an object, convert to array
         return Object.keys(response).map(key => {
           const box = response[key];
           if (!box) {

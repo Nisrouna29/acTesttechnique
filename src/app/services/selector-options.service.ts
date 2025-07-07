@@ -18,8 +18,6 @@ export class SelectorOptionsService {
           console.warn('Response is null or undefined, returning empty array');
           return [];
         }
-
-        // If response is an object, convert to array
         return Object.keys(response).map(key => {
           const option = response[key];
           if (!option) {
