@@ -3,7 +3,7 @@ import { ISelectorOption } from '../models/selector.option';
 import { MatRippleModule } from '@angular/material/core';
 import { BoxService } from '../services/box.service'
 import { CommonModule } from '@angular/common';
-import { Observable, combineLatest, fromEvent, map } from 'rxjs';
+import { Observable, combineLatest, fromEvent, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-selector-option',
@@ -21,11 +21,10 @@ export class SelectorOptionComponent implements OnInit, AfterViewInit {
 
   constructor(private boxService: BoxService) { }
   ngAfterViewInit() {
-    this.click$ = fromEvent(this.optionButton.nativeElement, 'click');
     // if we click on the button we patch the value with her new value
-    this.click$.subscribe((event) => {
-      this.boxService.patchBox(this.option).subscribe();
-    });
+    fromEvent(this.optionButton.nativeElement, 'click').pipe(
+      switchMap(async () => this.boxService.patchBox(this.option).subscribe()) // <-- must return Observable
+    ).subscribe();
 
   }
 
